@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="movie_image">Movie Image</string>
+    <string name="filter_movies">Filter Movies</string>
+    <string name="popular_movies">POPULARITY</string>
+    <string name="top_rated_movies">TOP RATED</string>
+    <string name="movies_failure">Failed to load movies</string>
+    <string name="no_internet">No Internet Connection.</string>
+    <string name="poster">poster</string>
+    <string name="title">title</string>
+    <string name="release_date">Release Date %1$s</string>
+</resources>
