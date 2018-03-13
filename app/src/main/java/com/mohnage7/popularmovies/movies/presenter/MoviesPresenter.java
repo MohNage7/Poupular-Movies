@@ -1,8 +1,8 @@
-package com.mohnage7.popularmovies.presenter;
+package com.mohnage7.popularmovies.movies.presenter;
 
 
-import com.mohnage7.popularmovies.MoviesContract;
 import com.mohnage7.popularmovies.model.MoviesResponse;
+import com.mohnage7.popularmovies.movies.MoviesContract;
 import com.mohnage7.popularmovies.network.Api;
 import com.mohnage7.popularmovies.network.ApiClient;
 

@@ -3,6 +3,7 @@ package com.mohnage7.popularmovies.network;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mohnage7.popularmovies.BuildConfig;
+import com.mohnage7.popularmovies.utils.Constants;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -52,7 +53,7 @@ public class ApiClient {
 
                     // API KEY GOES here ... deleted for uploading to github
                     HttpUrl url = originalHttpUrl.newBuilder()
-                            .addQueryParameter("api_key", "")
+                            .addQueryParameter("api_key", Constants.API_KEY)
                             .build();
 
                     // Request customization: add request headers

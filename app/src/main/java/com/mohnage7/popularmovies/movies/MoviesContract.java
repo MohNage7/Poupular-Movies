@@ -1,4 +1,4 @@
-package com.mohnage7.popularmovies;
+package com.mohnage7.popularmovies.movies;
 
 import com.mohnage7.popularmovies.model.Movie;
 

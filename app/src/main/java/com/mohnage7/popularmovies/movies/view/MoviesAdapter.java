@@ -1,4 +1,4 @@
-package com.mohnage7.popularmovies.view;
+package com.mohnage7.popularmovies.movies.view;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

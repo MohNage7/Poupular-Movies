@@ -2,11 +2,20 @@
     <string name="app_name">Popular Movies</string>
     <string name="movie_image">Movie Image</string>
     <string name="filter_movies">Filter Movies</string>
-    <string name="popular_movies">POPULARITY</string>
+    <string name="popular_movies">POPULAR</string>
     <string name="top_rated_movies">TOP RATED</string>
     <string name="movies_failure">Failed to load movies</string>
     <string name="no_internet">No Internet Connection.</string>
     <string name="poster">poster</string>
     <string name="title">title</string>
     <string name="release_date">Release Date %1$s</string>
+    <string name="favorite">Favorite</string>
+    <string name="reviews">Reviews</string>
+    <string name="trailers">Trailers</string>
+    <string name="play">play</string>
+
+    <string name="content_authority">com.mohnage7.popularmovies</string>
+    <string name="favorite_add_sucess">Movie added as a favorite</string>
+    <string name="favorite_add_fail">Movie added before as a favorite</string>
+    <string name="deleted_from_favorite">Movie has been deleted from favorite</string>
 </resources>

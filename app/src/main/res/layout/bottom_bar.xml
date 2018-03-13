@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?actionBarSize"
+    android:layout_alignParentBottom="true"
+    android:background="@color/colorPrimary"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+
+    <TextView
+        android:id="@+id/favorite_txt_view"
+        style="@style/bottom_bar_title"
+        android:drawableTop="@drawable/ic_favorite_white_24dp"
+        android:text="@string/favorite" />
+
+
+    <TextView
+        android:id="@+id/reviews_txt_view"
+        style="@style/bottom_bar_title"
+        android:drawableTop="@drawable/ic_rate_review_white_24dp"
+        android:text="@string/reviews" />
+
+
+    <TextView
+        android:id="@+id/trailers_txt_view"
+        style="@style/bottom_bar_title"
+        android:drawableTop="@drawable/ic_movie_filter_white_24dp"
+        android:text="@string/trailers" />
+</LinearLayout>
