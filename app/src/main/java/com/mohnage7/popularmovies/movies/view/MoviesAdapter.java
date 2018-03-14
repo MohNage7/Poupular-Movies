@@ -94,6 +94,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
             Picasso.with(mContext)
                     .load(imageUrl)
                     .networkPolicy(NetworkPolicy.OFFLINE)
+                    .placeholder(R.drawable.movie_place_holder)
                     .into(movieImageView, new Callback() {
                         @Override
                         public void onSuccess() {
@@ -104,6 +105,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
                             //Try again online if cache failed
                             Picasso.with(mContext)
                                     .load(imageUrl)
+                                    .placeholder(R.drawable.movie_place_holder)
                                     .into(movieImageView, new Callback() {
                                         @Override
                                         public void onSuccess() {
