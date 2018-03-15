@@ -1,8 +1,10 @@
 package com.mohnage7.popularmovies.movies.view;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -34,12 +36,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.mohnage7.popularmovies.utils.Constants.FAVORITE;
+import static com.mohnage7.popularmovies.utils.Constants.LIST_STATE;
 import static com.mohnage7.popularmovies.utils.Constants.MOVIE;
 
 public class MoviesActivity extends AppCompatActivity implements MoviesContract.IMoviesView, MoviesAdapter.OnMovieClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String MOVIES_TYPE = "movies_type";
-    private static final String RECYCLER_POSITION = "last_position";
     private static final int MOVIE_LOADER_ID = 0;
     @BindView(R.id.loading_view)
     public AVLoadingIndicatorView loadingIndicatorView;
@@ -50,8 +52,9 @@ public class MoviesActivity extends AppCompatActivity implements MoviesContract.
     private List<Movie> mMoviesList;
     private MoviesAdapter mMoviesAdapter;
     private int mSelectedMovieType = 0;
-    private int lastFirstVisiblePosition = 0;
     private boolean isLoadedBefore;
+    private GridLayoutManager layoutManager;
+    private Parcelable mListState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +67,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesContract.
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(MOVIES_TYPE))
                 mSelectedMovieType = savedInstanceState.getInt(MOVIES_TYPE);
-            if (savedInstanceState.containsKey(RECYCLER_POSITION))
-                lastFirstVisiblePosition = savedInstanceState.getInt(RECYCLER_POSITION);
+
         }
 
         setupBottomBar();
@@ -126,9 +128,11 @@ public class MoviesActivity extends AppCompatActivity implements MoviesContract.
 
     private void getMoviesListFromDatabase() {
         mSelectedMovieType = Constants.FAVORITE;
+        // if the data is loaded before . restart the adapter to keep the data refreshed
         if (isLoadedBefore)
             restartLoader();
         else
+            // first time loading data
             initLoader();
     }
 
@@ -137,12 +141,20 @@ public class MoviesActivity extends AppCompatActivity implements MoviesContract.
         mMoviesList = new ArrayList<>();
         //create adapter
         mMoviesAdapter = new MoviesAdapter(mMoviesList, this, this);
-        // create layout manger
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        // init layout manger
+        // change number of movies in a single row according to phone orientation
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            // in case it's portrait
+            layoutManager = new GridLayoutManager(this, 2);
+        } else {
+            // in case it's landscape
+            layoutManager = new GridLayoutManager(this, 4);
+        }
         // set layout manger
         mMoviesRecyclerView.setLayoutManager(layoutManager);
         // set movies adapter
         mMoviesRecyclerView.setAdapter(mMoviesAdapter);
+
     }
 
     private void getMoviesListFromServer() {
@@ -180,11 +192,18 @@ public class MoviesActivity extends AppCompatActivity implements MoviesContract.
     protected void onSaveInstanceState(Bundle outState) {
         // save selected movie type
         outState.putInt(MOVIES_TYPE, mSelectedMovieType);
-        // get recycler position
-        lastFirstVisiblePosition = ((GridLayoutManager) mMoviesRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
-        // save recycler position
-        outState.putInt(RECYCLER_POSITION, lastFirstVisiblePosition);
+        // save recycler state
+        mListState = layoutManager.onSaveInstanceState();
+        outState.putParcelable(LIST_STATE, mListState);
+
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null)
+            mListState = savedInstanceState.getParcelable(LIST_STATE);
     }
 
     @Override
@@ -249,5 +268,9 @@ public class MoviesActivity extends AppCompatActivity implements MoviesContract.
         loadingIndicatorView.smoothToHide();
         // update adapter with the new data
         mMoviesAdapter.updateMoviesAdapter(mMoviesList);
+        // restore list state ( position )
+        if (mListState != null) {
+            layoutManager.onRestoreInstanceState(mListState);
+        }
     }
 }

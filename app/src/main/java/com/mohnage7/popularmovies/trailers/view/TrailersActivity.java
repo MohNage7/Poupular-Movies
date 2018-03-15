@@ -1,6 +1,7 @@
 package com.mohnage7.popularmovies.trailers.view;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.mohnage7.popularmovies.utils.Constants.LIST_STATE;
 import static com.mohnage7.popularmovies.utils.Constants.MOVIE_ID;
 
 public class TrailersActivity extends AppCompatActivity implements TrailersContract.IReviewsView {
@@ -32,6 +34,8 @@ public class TrailersActivity extends AppCompatActivity implements TrailersContr
     private List<Trailers> mTrailersList;
     private TrailersAdapter mTrailersAdapter;
     private int movieId;
+    private LinearLayoutManager layoutManager;
+    private Parcelable mListState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +70,7 @@ public class TrailersActivity extends AppCompatActivity implements TrailersContr
         //create adapter
         mTrailersAdapter = new TrailersAdapter(mTrailersList, this);
         // create layout manger
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         // set layout manger
         mTrailersRecycler.setLayoutManager(layoutManager);
         // set movies adapter
@@ -95,6 +99,21 @@ public class TrailersActivity extends AppCompatActivity implements TrailersContr
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // save recycler state
+        mListState = layoutManager.onSaveInstanceState();
+        outState.putParcelable(LIST_STATE, mListState);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null)
+            mListState = savedInstanceState.getParcelable(LIST_STATE);
+    }
 
     @Override
     public void SetTrailers(List<Trailers> reviewsList) {
@@ -103,6 +122,10 @@ public class TrailersActivity extends AppCompatActivity implements TrailersContr
         this.mTrailersList = reviewsList;
         // update adapter with the new data
         mTrailersAdapter.updateReviewsAdapter(mTrailersList);
+        // restore list state ( position )
+        if (mListState != null) {
+            layoutManager.onRestoreInstanceState(mListState);
+        }
     }
 
     @Override

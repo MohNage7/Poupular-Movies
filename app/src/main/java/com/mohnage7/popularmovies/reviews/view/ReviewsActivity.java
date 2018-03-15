@@ -1,6 +1,7 @@
 package com.mohnage7.popularmovies.reviews.view;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.mohnage7.popularmovies.utils.Constants.LIST_STATE;
 import static com.mohnage7.popularmovies.utils.Constants.MOVIE_ID;
 import static com.mohnage7.popularmovies.utils.Constants.MOVIE_URL;
 
@@ -37,6 +39,8 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewContract
     private List<Review> mReviewsList;
     private ReviewsAdapter mReviewsAdapter;
     private int movieId;
+    private LinearLayoutManager layoutManager;
+    private Parcelable mListState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +74,7 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewContract
         //create adapter
         mReviewsAdapter = new ReviewsAdapter(mReviewsList);
         // create layout manger
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         // set layout manger
         mReviewsRecycler.setLayoutManager(layoutManager);
         // set movies adapter
@@ -105,6 +109,21 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewContract
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // save recycler state
+        mListState = layoutManager.onSaveInstanceState();
+        outState.putParcelable(LIST_STATE, mListState);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null)
+            mListState = savedInstanceState.getParcelable(LIST_STATE);
+    }
 
     @Override
     public void setReviews(List<Review> reviewsList) {
@@ -113,6 +132,10 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewContract
         this.mReviewsList = reviewsList;
         // update adapter with the new data
         mReviewsAdapter.updateReviewsAdapter(mReviewsList);
+        // restore list state ( position )
+        if (mListState != null) {
+            layoutManager.onRestoreInstanceState(mListState);
+        }
     }
 
     @Override

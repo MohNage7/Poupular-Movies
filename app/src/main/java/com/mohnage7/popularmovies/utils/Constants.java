@@ -9,6 +9,7 @@ public class Constants {
     public static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w342";
     public static final String API_KEY = "dc8041dfe2be51db52e0ffaadabebc8d";
     public static final String YOUTUBE_KEY = "AIzaSyC3SupV0UwQa3w3Y4BmKxSSrfyCDj2V0uI";
+    public static final String LIST_STATE = "state";
     public static final String MOVIE = "movie";
     public static final String MOVIE_ID = "movie_id";
     public static final String MOVIE_URL = "movie_url";
