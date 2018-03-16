@@ -160,7 +160,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
      * this method deletes movie from favorite db
      */
     private void deleteMovieFromFavorite() {
-        int rowNum = getContentResolver().delete(MovieContract.MovieEntry.buildWeatherUriWithDate(movie.getId()), null, null);
+        int rowNum = getContentResolver().delete(MovieContract.MovieEntry.buildMovieUriWithDate(movie.getId()), null, null);
         if (rowNum != 0)
             updateFavoriteUi(false);
     }
@@ -171,7 +171,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     private boolean checkIfMovieNotAddedBefore() {
         // get movie from content provider by it's id
-        Cursor cursor = getContentResolver().query(MovieContract.MovieEntry.buildWeatherUriWithDate(movie.getId()), null, null, null, null, null);
+        Cursor cursor = getContentResolver().query(MovieContract.MovieEntry.buildMovieUriWithDate(movie.getId()), null, null, null, null, null);
         // if cursor !=null and cursor count == 0 return true otherwise false
         return (cursor != null ? cursor.getCount() : 0) == 0;
     }
